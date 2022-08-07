@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "Informacija o Uporabniku";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center-box">
+    <h1 class="new-text-style">@ViewBag.SiteUser.UserName</h1>
+</div>
+<div class="login-box">
+    <h2 class="new-text-style">E-Mail: @ViewBag.SiteUser.Email</h2>
+    <h2 class="new-text-style">Zadnja prijava: @Globals.ConvertToSlovenianDateTime(ViewBag.SiteUser.LastLogin)</h2>
+</div>
+<br />
+@if (ViewBag.IsCurrentUser)
+{
+    using (Html.BeginForm("Logoff", "AccountAction", FormMethod.Post))
+    {
+        <center>
+            <input type="submit" class="login-button" value="Odjava" />
+        </center>
+    }
+}
+<br />
+<br />
+<table align="center">
+    @if (ViewBag.AnyDeliveries && (ViewBag.IsAdmin || ViewBag.IsCurrentUser))
+    {
+        <tr>
+            <th>Številka Dostave</th>
+            <th>Datum Dostave</th>
+            <th>Točka Dostave</th>
+            <th>Potrjena</th>
+            <th></th>
+        </tr>
+        foreach (KrkaWeb.Models.ApplicationDelivery delivery in ViewBag.UserDeliveries)
+        {
+            <tr>
+                <td>@delivery.DeliveryNumber</td>
+                <td>@Globals.ConvertToSlovenianDate(delivery.DeliveryDate)</td>
+                <td>@delivery.DeliveryPlace</td>
+                @if (delivery.DeliveryDone)
+                {
+                    <td>✅</td>
+                    <td><a class="new-link-style" href="/Home/GenerateReport?delivery_id=@delivery.DeliveryID">Poročilo</a></td>
+                }
+                else
+                {
+                    <td>❌</td>
+                    <td><a class="new-link-style" href="/Home/EditDelivery?delivery_number=@delivery.DeliveryNumber">Uredi</a></td>
+                }
+                
+            </tr>
+        }
+    }
+</table>

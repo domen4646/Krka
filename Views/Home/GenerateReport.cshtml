@@ -1,0 +1,19 @@
+﻿@{
+    Layout = null;
+}
+<head>
+    <meta charset="utf-8" />
+</head>
+<body style="margin-left: 300px; margin-right: 300px;">
+    <div style="text-align: center;">
+        <h1>Primer Poročila</h1>
+        <h2>Potrjena je bila naslednja dostava:</h2>
+        <hr />
+        <br />
+    </div>
+    <h3>Uporabnik: @ViewBag.ReportDeliveryUser</h3>
+    <h3>Številka dostave: @ViewBag.ReportDeliveryNumber</h3>
+    <h3>Datum dostave: @Globals.ConvertToSlovenianDate(ViewBag.ReportDeliveryDate)</h3>
+    <h3>Točka dostave: @ViewBag.ReportDeliveryPlace</h3>
+    <h3>Skladišče: @ViewBag.ReportDeliveryWarehause</h3>
+</body>

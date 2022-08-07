@@ -1,0 +1,26 @@
+﻿
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" type="text/css" href="~/styles/main_styles.css" />
+    <title></title>
+</head>
+<body>
+    <div class="top-panel">
+        <div class="top-div">
+            <li>
+                <a href="/" class="new-link">Domov</a>
+            </li>
+            <li>
+                <a href="/AccountAction/Register" class="new-link">Registracija</a>
+            </li>
+            <li class="li-r">
+                <a href="/AccountAction/@Html.Action("GetActionUrl", "AccountAction")" class="new-link">@Html.Action("GetUsername", "AccountAction")</a>
+            </li>
+        </div>
+    </div><br />
+    @RenderBody()
+</body>
+</html>

@@ -1,0 +1,124 @@
+﻿@if (!ViewBag.LoggedIn)
+{
+    <div class="text-center-box">
+        <h1 class="new-text-style">Navodilo</h1>
+        <h3 class="new-text-style">Za uporabo se prijavite. Če še nimate računa, se lahko registrirate.</h3>
+    </div>
+}
+else if (ViewBag.IsStore)
+{
+    <table align="center">
+        <tr>
+            <th>Uporabnik</th>
+            <th>Številka Dostave</th>
+            <th>Datum Dostave</th>
+            <th>Točka Dostave</th>
+            <th>Potrjena</th>
+            <th></th>
+        </tr>
+        @foreach (KrkaWeb.Models.ApplicationDelivery delivery in ViewBag.Deliveries)
+        {
+            <tr>
+                <td><a class="new-link-style" href="/AccountAction/UserInfo?userid=@delivery.DeliveryUser">@delivery.DeliveryUserName</a></td>
+                <td>@delivery.DeliveryNumber</td>
+                <td>@Globals.ConvertToSlovenianDate(delivery.DeliveryDate)</td>
+                <td>@delivery.DeliveryPlace</td>
+                @if (delivery.DeliveryDone)
+                {
+                    <td>✅</td>
+                    <td>Potrjeno</td>
+                }
+                else
+                {
+                    <td>❌</td>
+                    <td><a class="new-link-style" href="/Home/ConfirmDelivery?delivery_number=@delivery.DeliveryNumber">Potrdi</a></td>
+                }
+
+            </tr>
+        }
+    </table>
+}
+else if (ViewBag.IsAdmin)
+{
+    <br />
+    <center>
+        <button class="login-button" onclick="window.location.href = '/Home/AddDelivery';">Dodajte Pošiljko</button>
+    </center>
+    <br />
+    <br />
+    <table align="center">
+        <tr>
+            <th>Uporabnik</th>
+            <th>Številka Dostave</th>
+            <th>Datum Dostave</th>
+            <th>Točka Dostave</th>
+            <th>Potrjena</th>
+            <th></th>
+        </tr>
+        @foreach (KrkaWeb.Models.ApplicationDelivery delivery in ViewBag.Deliveries)
+        {
+        <tr>
+            <td><a class="new-link-style" href="/AccountAction/UserInfo?userid=@delivery.DeliveryUser">@delivery.DeliveryUserName</a></td>
+            <td>@delivery.DeliveryNumber</td>
+            <td>@Globals.ConvertToSlovenianDate(delivery.DeliveryDate)</td>
+            <td>@delivery.DeliveryPlace</td>
+            @if (delivery.DeliveryDone)
+                {
+                <td>✅</td>
+                    <td><a class="new-link-style" href="/Home/GenerateReport?delivery_id=@delivery.DeliveryID">Poročilo</a></td>
+            }
+            else
+            {
+                <td>❌</td>
+                    <td><a class="new-link-style" href="/Home/EditDelivery?delivery_number=@delivery.DeliveryNumber">Uredi</a></td>
+            }
+
+        </tr>
+        }
+    </table>
+}
+else if (ViewBag.IsNormal)
+{
+    <div class="text-center-box">
+        <h1 class="new-text-style">Navodila</h1>
+        <h3 class="new-text-style">Če želite urediti obstoječe pošiljke, pojdite na svoj profil.</h3>
+    </div>
+    <br />
+    <center>
+        <button class="login-button" onclick="window.location.href = '/Home/AddDelivery';">Dodajte Pošiljko</button>
+    </center>
+}
+
+@*
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>index</title>
+</head>
+<body>
+    <div> 
+        Hello, the current date is @DateTime.Now
+        <br />
+        <input type="date" id="datePicker" class="new-form-input"/>
+        <script>
+            Date.prototype.toDateInputValue = (function () {
+                var local = new Date(this);
+                local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+                return local.toJSON().slice(0, 10);
+            });
+
+            var dat = document.getElementById("datePicker");
+            var minn = new Date().toDateInputValue();
+            dat.min = minn;
+            dat.value = minn;
+        </script>
+    </div>
+</body>
+</html>
+*@

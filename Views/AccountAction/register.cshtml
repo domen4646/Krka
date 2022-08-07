@@ -1,0 +1,47 @@
+﻿@model KrkaWeb.Models.AccountRegisterModel
+@{
+    ViewBag.Title = "register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center-box">
+    <h1 class="new-text-style">Registracija</h1>
+</div>
+@using (Html.BeginForm("Register", "AccountAction", FormMethod.Post))
+{
+    <div class="login-box">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)<br />
+
+
+        @Html.TextBoxFor(a => a.username, new { placeholder = "Uporabniško Ime", @class = "new-form-input" })<br />
+        @Html.ValidationMessageFor(a => a.username)<br /><br />
+        @Html.TextBoxFor(a => a.email, new { placeholder = "E-Mail", @class = "new-form-input" })<br />
+        @Html.ValidationMessageFor(a => a.email)<br /><br />
+        @Html.PasswordFor(a => a.password, new { placeholder = "Geslo", @class = "new-form-input" })<br />
+        @Html.ValidationMessageFor(a => a.password)<br /><br />
+        @Html.PasswordFor(a => a.confirm_password, new { placeholder = "Potrditev Gesla", @class = "new-form-input" })<br />
+        @Html.ValidationMessageFor(a => a.confirm_password)<br /><br />
+        @Html.CheckBoxFor(a => a.is_store, new { id = "storeCheckBox", onchange = "onCheckBoxChange()" })        
+        <label for="storeCheckBox" class="new-text-style"> Registrirajte se kot skladiščnik</label><br />
+        <br />
+        <div id="storekeeperRegister" hidden>
+            @Html.PasswordFor(a => a.store_password, new { placeholder = "Skladiščniško geslo", @class = "new-form-input" })<br /><br />
+            @Html.ValidationMessageFor(a => a.store_number)<br /><br />
+
+            @Html.TextBoxFor(a => a.store_number, new { placeholder = "Številka skladišča", @class = "new-form-input" })<br /><br />
+            @Html.ValidationMessageFor(a => a.store_number)<br /><br />
+
+        </div>
+        <input type="submit" class="login-button" value="Ustvari Račun" />
+
+    </div>
+}
+<script>
+    onCheckBoxChange();
+    function onCheckBoxChange() {
+        var cbox_value = document.getElementById("storeCheckBox").checked;
+        document.getElementById("storekeeperRegister").hidden = !cbox_value;
+    }
+</script>
+

@@ -1,0 +1,84 @@
+﻿@model KrkaWeb.Models.DeliveryInfoModel
+<div class="text-center-box">
+    <h1 class="new-text-style">Uredi Dostavo</h1>
+</div>
+@using (Html.BeginForm("EditDelivery", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken();
+    <div class="login-box">
+        @Html.ValidationSummary()<br />
+        <select id="datumi" name="date" onchange="on_date_changed()">
+            @for (int i = 0; i < 7; i++)
+            {
+                <option value="@i">@Globals.GetSlovenianDate(i);</option>
+            }
+        </select>
+        <br />
+        <p class="field-validation-error" id="err_chk"></p>
+        <div id="point_select">
+            <input type="radio" class="new-radio-style" id="plac1" name="place" value="1" />
+            <label for="plac1">Točka 1</label><br />
+            <input type="radio" class="new-radio-style" id="plac2" name="place" value="2" />
+            <label for="plac2">Točka 2</label><br />
+            <input type="radio" class="new-radio-style" id="plac3" name="place" value="3" />
+            <label for="plac3">Točka 3</label><br />
+            <input type="radio" class="new-radio-style" id="plac4" name="place" value="4" />
+            <label for="plac4">Točka 4</label><br />
+            <input type="radio" class="new-radio-style" id="plac5" name="place" value="5" />
+            <label for="plac5">Točka 5</label><br />
+            <br />
+        </div>
+        <input type="submit" class="login-button" value="Dodaj" /><br />
+        <input type="hidden" name="number" value="@ViewBag.DeliveryNumber" />
+    </div>
+}
+<script>
+    on_date_changed();
+    var all_disabled = false;
+    function on_submit_check() {
+        var erc = document.getElementById("err_chk");
+        for (var i = 1; i <= 5; i++) {
+            var doc = document.getElementById("plac" + i);
+            if (doc.checked && doc.disabled) {
+                erc.innerText = "Izberite veljavno točko dostave.";
+                return false;
+            }
+        }
+    }
+
+    var json_needed;
+    function get_json(del_num, del_day) {
+        url = "/Home/DateCheck?day_number=" + del_day + "&delivery_number=" + del_num;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.responseType = 'text';
+        xhr.onload = function() {
+            var status = xhr.status;
+            if (status === 200) {
+                json_needed = xhr.response;
+            } else {
+                json_needed = "[false, false, false, false, false]";
+            }
+
+            var _json = JSON.parse(json_needed);
+            var disb = 0;
+            for (var i = 1; i <= 5; i++) {
+                var doc = document.getElementById("plac" + i);
+                doc.disabled = !_json[i];
+            }
+            if (disb >= 5) {
+                all_disabled = true;
+            }
+            else {
+                all_disabled = false;
+            }
+
+        };
+        xhr.send();
+    };
+    function on_date_changed() {
+        var date = document.getElementById("datumi").selectedIndex;
+        var del_num = document.getElementById("deliveryNumber").value;
+        get_json(del_num, date);
+    }
+</script>

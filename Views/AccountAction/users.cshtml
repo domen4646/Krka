@@ -1,0 +1,8 @@
+﻿<div class="text-center-box">
+    <h1 class="new-text-style">Uporabniki</h1>
+    @foreach (var user in ViewBag.AllUsers)
+    {
+        <a class="new-link-style" href="/AccountAction/UserInfo?userid=@user.Id">@user.UserName</a>
+        <br /><br />
+    }
+</div>

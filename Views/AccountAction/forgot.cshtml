@@ -1,0 +1,28 @@
+﻿@model KrkaWeb.Models.AccountForgotModel
+@{
+    ViewBag.Title = "forgot";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center-box">
+    <h1 class="new-text-style">Password reset for @ViewBag.CurrentUserName</h1>
+</div>
+@using (Html.BeginForm("Forgot", "AccountAction", FormMethod.Post))
+{
+    <div class="login-box">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)<br />
+
+
+        @Html.PasswordFor(a => a.new_password, new { placeholder = "New Password", @class = "new-form-input" })<br />
+        @Html.ValidationMessageFor(a => a.new_password)<br /><br />
+        @Html.PasswordFor(a => a.confirm_new_password, new { placeholder = "Confirm Password", @class = "new-form-input" })
+        @Html.ValidationMessageFor(a => a.confirm_new_password)<br /><br />
+        <input type="hidden" name="__token" value="@ViewBag.PasswordResetToken" />
+        <input type="hidden" name="__userid" value="@ViewBag.PasswordResetUserID" />
+        <input type="submit" class="login-button" value="Reset Password" />
+
+    </div>
+}
+
+

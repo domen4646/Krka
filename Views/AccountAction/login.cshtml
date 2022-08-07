@@ -1,0 +1,25 @@
+﻿@model KrkaWeb.Models.AccountLoginModel
+@{
+    ViewBag.Title = "login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center-box">
+    <h1 class="new-text-style">Prijava</h1>
+</div>
+@using (Html.BeginForm("Login", "AccountAction", FormMethod.Post))
+{
+    <div class="login-box">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)<br />
+
+
+        @Html.TextBoxFor(a => a.username_or_email, new { placeholder = "Uporabniško ime ali E-Mail", @class = "new-form-input" })<br />
+        @Html.ValidationMessageFor(a => a.username_or_email)<br /><br />
+        @Html.PasswordFor(a => a.password, new { placeholder = "Geslo", @class = "new-form-input" })<span class="standard-separator"></span>
+        <a href="/AccountAction/forgotpassword" class="new-link-style">Pozabljeno geslo?</a><br />
+        @Html.ValidationMessageFor(a => a.password)<br /><br />                
+        <input type="submit" class="login-button" value="Prijava" />
+
+    </div>
+}
